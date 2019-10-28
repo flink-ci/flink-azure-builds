@@ -1,17 +1,18 @@
 jobs:
-- job: runOnDefaultAgentPool
+- job: runOnDefaultAgentPool # = custom machines
   pool:
     name: Default
   container: flink-build-container
   timeoutInMinutes: 0
   steps:
   # Azure pipelines can only evaluate conditions with the build repo name in the steps.
-  # if the repo != "flink-ci/flink", we stop
-  - script: exit 1
-    condition: not(eq(variables['Build.Repository.Name'], 'flink-ci/flink'))
+  # if the repo == "flink-ci/flink", we execute the steps
   - script: sudo chown -R user:user /home/user
+    condition: eq(variables['Build.Repository.Name'], 'flink-ci/flink')
   - script: sudo chown -R user:user .
+    condition: eq(variables['Build.Repository.Name'], 'flink-ci/flink')
   - task: Maven@3
+    condition: eq(variables['Build.Repository.Name'], 'flink-ci/flink')
     inputs:
       mavenPomFile: 'pom.xml'
       mavenOptions: '-Xmx3072m'
@@ -30,12 +31,13 @@ jobs:
   timeoutInMinutes: 0
   steps:
   # Azure pipelines can only evaluate conditions with the build repo name in the steps.
-  # if the repo == "flink-ci/flink", we stop
-  - script: exit 1
-    condition: eq(variables['Build.Repository.Name'], 'flink-ci/flink')
+  # if the repo != "flink-ci/flink", we execute
   - script: sudo chown -R user:user /home/user
+    condition: not(eq(variables['Build.Repository.Name'], 'flink-ci/flink'))
   - script: sudo chown -R user:user .
+    condition: not(eq(variables['Build.Repository.Name'], 'flink-ci/flink'))
   - task: Maven@3
+    condition: not(eq(variables['Build.Repository.Name'], 'flink-ci/flink'))
     inputs:
       mavenPomFile: 'pom.xml'
       mavenOptions: '-Xmx3072m'
