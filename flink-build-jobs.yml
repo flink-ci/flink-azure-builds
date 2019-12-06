@@ -3,7 +3,7 @@ jobs:
   pool:
     name: Default
   container:
-    image: rmetzger/flink-ci:5-ubuntu-amd64
+    image: rmetzger/flink-ci:ubuntu-jdk8-amd64-e005e00
   timeoutInMinutes: 120
   steps:
   # Azure pipelines can only evaluate conditions with the build repo name in the steps.
@@ -25,7 +25,7 @@ jobs:
   pool:
     vmImage: 'ubuntu-latest'
   container:
-    image: rmetzger/flink-ci:5-ubuntu-amd64
+    image: rmetzger/flink-ci:ubuntu-jdk8-amd64-e005e00
   timeoutInMinutes: 240
   steps:
   # Azure pipelines can only evaluate conditions with the build repo name in the steps.
