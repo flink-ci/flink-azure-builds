@@ -1,5 +1,6 @@
 jobs:
 - job: runOnCustomMachines # = custom machines
+  condition: not(eq(variables['MODE'], 'e2e'))
   pool:
     name: Default
   container:
@@ -21,7 +22,20 @@ jobs:
       goals: 'clean install'
       timeoutInMinutes: 120
 
+- job: runEndToEndTests
+  condition: eq(variables['MODE'], 'e2e')
+  pool: # we run the end to end tests on the msft hosted agents
+    vmImage: 'ubuntu-latest'
+  steps:
+    - script: ./tools/travis/setup_maven.sh
+    - script: ./tools/azure-pipelines/setup_kubernetes.sh
+    - script: M2_HOME=/home/vsts/maven_cache/apache-maven-3.2.5/ PATH=/home/vsts/maven_cache/apache-maven-3.2.5/bin:$PATH PROFILE="-Dinclude-hadoop -Dhadoop.version=2.8.3 -De2e-metrics" STAGE=compile ./tools/azure_controller.sh compile
+      displayName: Build
+    - script: FLINK_DIR=`pwd`/build-target flink-end-to-end-tests/run-nightly-tests.sh
+      displayName: Run nightly e2e tests
+
 - job: runOnAzure
+  condition: not(eq(variables['MODE'], 'e2e'))
   pool:
     vmImage: 'ubuntu-latest'
   container:
