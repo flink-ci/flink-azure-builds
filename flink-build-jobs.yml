@@ -1,5 +1,6 @@
 jobs:
 - job: runOnCustomMachines # = custom machines
+  displayName: tests
   condition: not(eq(variables['MODE'], 'e2e'))
   pool:
     name: Default
@@ -36,6 +37,7 @@ jobs:
       displayName: Run nightly e2e tests
 
 - job: runOnAzure
+  displayName: tests
   condition: not(eq(variables['MODE'], 'e2e'))
   pool:
     vmImage: 'ubuntu-latest'
