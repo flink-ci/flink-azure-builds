@@ -1,7 +1,7 @@
 jobs:
 - job: runOnCustomMachines # = custom machines
   displayName: tests
-  condition: or(eq(variables['args'], Null), contains(variables['args'], 'all'))
+  condition: or(eq(variables['args'], ''), contains(variables['args'], 'all'))
   pool:
     name: Default
   container:
@@ -38,7 +38,7 @@ jobs:
 
 - job: runOnAzure
   displayName: tests
-  condition: or(null(variables['args']), contains(variables['args'], 'all'))
+  condition: or(eq(variables['args'], ''), contains(variables['args'], 'all'))
   pool:
     vmImage: 'ubuntu-latest'
   container:
