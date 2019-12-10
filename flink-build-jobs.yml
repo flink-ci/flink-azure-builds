@@ -1,7 +1,7 @@
 jobs:
 - job: runOnCustomMachines # = custom machines
   displayName: tests
-  condition: or(null(variables['args']), contains(variables['args'], 'all'))
+  condition: or(eq(variables['args'], null), contains(variables['args'], 'all'))
   pool:
     name: Default
   container:
