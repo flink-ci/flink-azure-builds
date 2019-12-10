@@ -23,6 +23,7 @@ jobs:
       timeoutInMinutes: 120
 
 - job: runEndToEndTests
+  displayName: e2e
   condition: contains(variables['args'], 'e2e')
   pool: # we run the end to end tests on the msft hosted agents
     vmImage: 'ubuntu-latest'
