@@ -1,7 +1,7 @@
 jobs:
 - job: runOnCustomMachines # = custom machines
   displayName: tests
-  condition: not(eq(variables['MODE'], 'e2e'))
+  condition: or(null(variables['args']), contains(variables['args'], 'all'))
   pool:
     name: Default
   container:
@@ -38,7 +38,7 @@ jobs:
 
 - job: runOnAzure
   displayName: tests
-  condition: not(eq(variables['MODE'], 'e2e'))
+  condition: or(null(variables['args']), contains(variables['args'], 'all'))
   pool:
     vmImage: 'ubuntu-latest'
   container:
